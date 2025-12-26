@@ -1,3 +1,11 @@
 spring:
   application:
     name: tdd-auth-empregados-exercicio
+  profiles:
+    active: test
+  jpa:
+    open-in-view: false
+
+security:
+  jwt:
+    duration: ${JWT_DURATION:86400}
