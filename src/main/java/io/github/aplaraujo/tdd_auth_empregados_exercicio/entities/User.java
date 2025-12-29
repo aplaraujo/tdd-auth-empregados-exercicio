@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -23,5 +24,8 @@ public class User {
     private String password;
     @ManyToMany
     @JoinTable(name = "tb_user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private final Set<Role> roles = new HashSet<>();
+    private Set<Role> roles = new HashSet<>();
+
+    @Transient
+    private List<String> authority;
 }

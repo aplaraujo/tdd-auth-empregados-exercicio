@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class TokenUtil {
     public String obtainAccessToken(MockMvc mockMvc, String email, String password) throws Exception {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("grant_type", "password");
+        // params.add("grant_type", "password");
         params.add("email", email);
         params.add("password", password);
 
