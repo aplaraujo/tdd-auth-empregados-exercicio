@@ -1,7 +1,8 @@
 package io.github.aplaraujo.tdd_auth_empregados_exercicio.config;
 
+import io.github.aplaraujo.tdd_auth_empregados_exercicio.security.CustomAccessDeniedHandler;
+import io.github.aplaraujo.tdd_auth_empregados_exercicio.security.CustomAuthenticationEntryPoint;
 import io.github.aplaraujo.tdd_auth_empregados_exercicio.security.JwtAuthFilter;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,10 +21,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
+@EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfiguration {
     private final JwtAuthFilter jwtAuthFilter;
+    private final CustomAuthenticationEntryPoint authenticationEntryPoint;
+    private final CustomAccessDeniedHandler accessDeniedHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -37,9 +40,10 @@ public class SecurityConfiguration {
                 .headers(headers -> headers
                         .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
                 )
-                .exceptionHandling(ex -> ex.authenticationEntryPoint((request, response, exp) -> {
-                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, exp.getMessage());
-                }))
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(authenticationEntryPoint)
+                        .accessDeniedHandler(accessDeniedHandler)
+                )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

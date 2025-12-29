@@ -26,8 +26,6 @@ class DepartmentControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private TokenUtil tokenUtil;
     private Long totalDepartments;
 
     @BeforeEach
