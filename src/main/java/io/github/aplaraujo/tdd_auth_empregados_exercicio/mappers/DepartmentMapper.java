@@ -7,9 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class DepartmentMapper {
     public Department toEntity(DepartmentDTO dto) {
-        Department department = new Department();
-        department.setId(dto.id());
-        department.setName(dto.name());
+        Department department = new Department(dto.id(), dto.name());
         return department;
     }
 

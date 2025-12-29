@@ -14,4 +14,5 @@ public record EmployeeDTO(
 
         @NotNull(message = "Campo requerido")
         Long departmentId) {
+
 }
